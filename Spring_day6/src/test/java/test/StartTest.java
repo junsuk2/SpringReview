@@ -19,14 +19,17 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import com.example.comment.config.CommentConfig;
 import com.example.comment.dto.Comment;
+import com.example.comment.dto.User;
 import com.example.comment.repo.CommentRepo;
+import com.example.comment.repo.UserRepo;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes={CommentConfig.class})
 public class StartTest {
 	static Logger logger = LoggerFactory.getLogger(StartTest.class);
 	@Autowired
-	CommentRepo repo;
+	CommentRepo cmtRepo;
+	UserRepo userRepo;
 	
 	@Autowired
 	DataSource ds;
@@ -38,7 +41,7 @@ public class StartTest {
 	
 	@Test
 	public void testRepo() {
-		assertThat(repo, is(notNullValue()));
+		assertThat(cmtRepo, is(notNullValue()));
 	}
 	
 	@Test
@@ -56,8 +59,15 @@ public class StartTest {
 	@Test
 	public void testInsert(){
 		Comment comment = new Comment(0,"hong","what?");
-		int result = repo.insert(comment);
+		int result = cmtRepo.insert(comment);
 		logger.trace("comment no:{}", comment.getCommentNo());
-		assertThat(comment, is(notNullValue()));
+		assertThat(result, is(notNullValue()));
+	}
+	
+	@Test
+	public void testAddUser(){
+		User user = new User("junsuk","1234");
+		int result = userRepo.addUser(user);
+		assertThat(result, is(notNullValue()));
 	}
 }
